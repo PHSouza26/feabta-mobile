@@ -7,14 +7,52 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+    <EditText
+        android:id="@+id/filtroData"
+        android:layout_width="156dp"
+        android:layout_height="40dp"
+        android:hint="Ano/Mês/Dia"
+        app:layout_constraintBottom_toTopOf="@+id/btnNovo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.309"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.593" />
+
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnFiltrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/addagendatext"
-        android:textColorLink="#AC0B0B"
+        android:text="Filtrar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toEndOf="@+id/filtroData"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.039" />
+
+    <Button
+        android:id="@+id/btnNovo"
+        android:layout_width="238dp"
+        android:layout_height="59dp"
+        android:text="+ Adicionar Agendamento"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerAgendamentos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="64dp"
-        android:background="@color/purple"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.764" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerAgendamentos"
+        android:layout_width="280dp"
+        android:layout_height="391dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.555" />
 </androidx.constraintlayout.widget.ConstraintLayout>
