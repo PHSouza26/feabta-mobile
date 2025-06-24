@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "521929475068",
+    "firebase_url": "https://feabtamobile-default-rtdb.firebaseio.com",
+    "project_id": "feabtamobile",
+    "storage_bucket": "feabtamobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521929475068:android:63cd7c2e12bcefc56a6879",
+        "android_client_info": {
+          "package_name": "com.example.feabtainformatica"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCm7I0WYXZ-I60vlRUnNGihabbRpVyI-Vk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
