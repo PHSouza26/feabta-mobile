@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +14,8 @@ import java.util.*;
 
 public class addagenda extends AppCompatActivity {
 
-    private EditText edtTipo, edtDescricao;
+    private Spinner spinnerTipo;
+    private EditText edtDescricao;
     private TextView txtData, txtHora;
     private Button btnAgendar;
 
@@ -29,7 +29,7 @@ public class addagenda extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addagenda);
 
-        edtTipo = findViewById(R.id.edtTipo);
+        spinnerTipo = findViewById(R.id.spinnerTipo);
         edtDescricao = findViewById(R.id.edtDescricao);
         txtData = findViewById(R.id.txtData);
         txtHora = findViewById(R.id.txtHora);
@@ -37,10 +37,27 @@ public class addagenda extends AppCompatActivity {
 
         databaseRef = FirebaseDatabase.getInstance().getReference("agendamentos");
 
+        // Configurar opções do Spinner
+        String[] tipos = {"Checagem", "Manutenção de Hardware", "Troca de peça", "Manutenção de Software"};
+        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tipos);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTipo.setAdapter(adapterSpinner);
+
         txtData.setOnClickListener(view -> escolherData());
         txtHora.setOnClickListener(view -> escolherHora());
 
         btnAgendar.setOnClickListener(view -> verificarEAgendar());
+
+        Button btnLimparCampos = findViewById(R.id.btnLimparCampos);
+
+        btnLimparCampos.setOnClickListener(v -> {
+            spinnerTipo.setSelection(0);
+            edtDescricao.setText("");
+            txtData.setText("Selecionar Data");
+            txtHora.setText("Selecionar Hora");
+            dataSelecionada = "";
+            horaSelecionada = "";
+        });
     }
 
     private void escolherData() {
@@ -61,14 +78,32 @@ public class addagenda extends AppCompatActivity {
     }
 
     private void verificarEAgendar() {
-        String tipo = edtTipo.getText().toString().trim();
+        String tipo = spinnerTipo.getSelectedItem().toString();
         String descricao = edtDescricao.getText().toString().trim();
 
-        if (TextUtils.isEmpty(tipo) || TextUtils.isEmpty(descricao)
-                || TextUtils.isEmpty(dataSelecionada) || TextUtils.isEmpty(horaSelecionada)) {
+        if (TextUtils.isEmpty(descricao) || TextUtils.isEmpty(dataSelecionada) || TextUtils.isEmpty(horaSelecionada)) {
             Toast.makeText(this, "Preencha todos os campos.", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        Calendar agora = Calendar.getInstance();
+
+        Calendar dataHoraSelecionada = Calendar.getInstance();
+        String[] dataSplit = dataSelecionada.split("-");
+        String[] horaSplit = horaSelecionada.split(":");
+
+        dataHoraSelecionada.set(Calendar.YEAR, Integer.parseInt(dataSplit[0]));
+        dataHoraSelecionada.set(Calendar.MONTH, Integer.parseInt(dataSplit[1]) - 1); // mês começa em 0
+        dataHoraSelecionada.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dataSplit[2]));
+        dataHoraSelecionada.set(Calendar.HOUR_OF_DAY, Integer.parseInt(horaSplit[0]));
+        dataHoraSelecionada.set(Calendar.MINUTE, Integer.parseInt(horaSplit[1]));
+
+        if (dataHoraSelecionada.before(agora)) {
+            Toast.makeText(this, "Data e horário devem ser futuros.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
 
         String chave = dataSelecionada + "_" + horaSelecionada;
 
@@ -104,4 +139,6 @@ public class addagenda extends AppCompatActivity {
             this.descricao = descricao;
         }
     }
+
+
 }
