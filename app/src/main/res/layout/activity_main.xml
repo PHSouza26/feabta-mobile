@@ -8,44 +8,48 @@
     tools:context=".MainActivity">
 
 
-    <TextView
+    <EditText
         android:id="@+id/filtroData"
-        android:layout_width="242dp"
-        android:layout_height="44dp"
+        android:layout_width="350dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="15dp"
         android:background="#EEE"
+        android:clickable="true"
+        android:drawableStart="@drawable/search_24dp_434343_fill0_wght500_grad0_opsz24"
+        android:focusable="false"
         android:hint="Selecionar Data"
+        android:inputType="none"
         android:padding="12dp"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/btnNovo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.218"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.568" />
+        app:layout_constraintVertical_bias="0.129" />
 
     <Button
         android:id="@+id/btnFiltrar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="132dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="17dp"
         android:text="Filtrar"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerAgendamentos"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.636"
-        app:layout_constraintStart_toEndOf="@+id/filtroData"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.048" />
+        app:layout_constraintHorizontal_bias="0.172"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filtroData"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btnNovo"
         android:layout_width="238dp"
         android:layout_height="59dp"
         android:text="+ Adicionar Agendamento"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerAgendamentos"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.918" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerAgendamentos" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerAgendamentos"
@@ -54,20 +58,43 @@
         android:layout_weight="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@+id/frameAgenda" />
 
     <Button
         android:id="@+id/btnLimparFiltro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="132dp"
+        android:layout_height="59dp"
+
+
+        android:layout_marginTop="17dp"
         android:text="Limpar Filtro"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerAgendamentos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.831"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filtroData"
+        app:layout_constraintVertical_bias="0.0" />
 
-
-        app:layout_constraintBottom_toBottomOf="parent"
+    <FrameLayout
+        android:id="@+id/frameAgenda"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:background="#8E71E6"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerAgendamentos" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txtAgenda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="AGENDAMENTOS ATIVOS"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

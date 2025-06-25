@@ -18,9 +18,7 @@ public class addagenda extends AppCompatActivity {
     private EditText edtDescricao, edtNome, edtEndereco;;
     private TextView txtData, txtHora;
     private Button btnAgendar;
-
     private DatabaseReference databaseRef;
-
     private String dataSelecionada = "";
     private String horaSelecionada = "";
 
@@ -38,9 +36,8 @@ public class addagenda extends AppCompatActivity {
         btnAgendar = findViewById(R.id.btnAgendar);
 
         databaseRef = FirebaseDatabase.getInstance().getReference("agendamentos");
-
-        // Configurar opções do Spinner
         String[] tipos = {"Checagem", "Manutenção de Hardware", "Troca de peça", "Manutenção de Software"};
+        
         ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tipos);
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTipo.setAdapter(adapterSpinner);
@@ -48,11 +45,13 @@ public class addagenda extends AppCompatActivity {
         txtData.setOnClickListener(view -> escolherData());
         txtHora.setOnClickListener(view -> escolherHora());
 
-        btnAgendar.setOnClickListener(view -> verificarEAgendar());
+        btnAgendar.setOnClickListener(view -> verificarAgendamento());
 
         Button btnLimparCampos = findViewById(R.id.btnLimparCampos);
 
         btnLimparCampos.setOnClickListener(v -> {
+            edtNome.setText("");
+            edtEndereco.setText("");
             spinnerTipo.setSelection(0);
             edtDescricao.setText("");
             txtData.setText("Selecionar Data");
@@ -79,7 +78,7 @@ public class addagenda extends AppCompatActivity {
         }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true).show();
     }
 
-    private void verificarEAgendar() {
+    private void verificarAgendamento() {
         String tipo = spinnerTipo.getSelectedItem().toString();
         String descricao = edtDescricao.getText().toString().trim();
         String nome = edtNome.getText().toString().trim();

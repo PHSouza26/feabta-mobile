@@ -12,8 +12,9 @@
         android:id="@+id/txtInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableStart="@drawable/outline_account_circle_24"
         android:text="Nome: \n Data: \n Hora: \n Serviço: \n Endereço:"
-        android:textSize="16sp"
-        android:textColor="#000" />
+        android:textSize="12sp"
+        android:textColor="#000"/>
 
 </LinearLayout>
