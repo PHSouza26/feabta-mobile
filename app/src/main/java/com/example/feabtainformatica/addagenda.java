@@ -18,9 +18,11 @@ public class addagenda extends AppCompatActivity {
     private EditText edtDescricao, edtNome, edtEndereco;;
     private TextView txtData, txtHora;
     private Button btnAgendar;
-    private DatabaseReference databaseRef;
     private String dataSelecionada = "";
     private String horaSelecionada = "";
+
+    private DatabaseReference databaseRef;
+    String[] tipos = {"Checagem", "Manutenção de Hardware", "Troca de peça", "Manutenção de Software"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,6 @@ public class addagenda extends AppCompatActivity {
         btnAgendar = findViewById(R.id.btnAgendar);
 
         databaseRef = FirebaseDatabase.getInstance().getReference("agendamentos");
-        String[] tipos = {"Checagem", "Manutenção de Hardware", "Troca de peça", "Manutenção de Software"};
         
         ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tipos);
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

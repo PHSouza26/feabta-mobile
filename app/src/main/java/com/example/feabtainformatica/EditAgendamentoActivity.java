@@ -18,10 +18,9 @@ public class EditAgendamentoActivity extends AppCompatActivity {
     private Spinner spinnerTipo;
     private TextView txtData, txtHora;
     private Button btnSalvar, btnExcluir;
-
-    private DatabaseReference databaseRef;
     private String chaveOriginal;
 
+    private DatabaseReference databaseRef;
     private String[] tipos = {"Checagem", "Manutenção de Hardware", "Troca de peça", "Manutenção de Software"};
 
     @Override
@@ -133,7 +132,6 @@ public class EditAgendamentoActivity extends AppCompatActivity {
 
         String novaChave = data + "_" + hora;
 
-        // Atualiza o agendamento incluindo nome e endereço
         MainActivity.Agendamento novo = new MainActivity.Agendamento(nome, endereco, data, hora, tipo, descricao);
 
         databaseRef.child(chaveOriginal).removeValue();

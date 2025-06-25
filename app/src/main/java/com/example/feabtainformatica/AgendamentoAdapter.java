@@ -34,7 +34,6 @@ public class AgendamentoAdapter extends RecyclerView.Adapter<AgendamentoAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MainActivity.Agendamento ag = lista.get(position);
 
-        // Monta o texto a ser exibido
         String texto = "Nome: " + ag.nome +
                 "\nData: " + ag.data +
                 "\nHora: " + ag.hora +
@@ -43,7 +42,7 @@ public class AgendamentoAdapter extends RecyclerView.Adapter<AgendamentoAdapter.
 
         holder.txtInfo.setText(texto);
 
-        // Clique curto: editar
+
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, EditAgendamentoActivity.class);
             intent.putExtra("nome", ag.nome);
@@ -55,7 +54,6 @@ public class AgendamentoAdapter extends RecyclerView.Adapter<AgendamentoAdapter.
             context.startActivity(intent);
         });
 
-        // Clique longo: excluir com confirmação
         holder.itemView.setOnLongClickListener(v -> {
             new androidx.appcompat.app.AlertDialog.Builder(context)
                     .setTitle("Excluir Agendamento")
