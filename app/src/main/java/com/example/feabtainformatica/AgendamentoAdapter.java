@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.*;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,24 +33,41 @@ public class AgendamentoAdapter extends RecyclerView.Adapter<AgendamentoAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MainActivity.Agendamento ag = lista.get(position);
-        holder.txtInfo.setText(ag.data + " " + ag.hora + "\n" + ag.tipoServico + ": " + ag.descricao);
+
+        // Monta o texto a ser exibido
+        String texto = "Nome: " + ag.nome +
+                "\nData: " + ag.data +
+                "\nHora: " + ag.hora +
+                "\nServiço: " + ag.tipoServico +
+                "\nEndereço: " + ag.endereco;
+
+        holder.txtInfo.setText(texto);
 
         // Clique curto: editar
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, EditAgendamentoActivity.class);
+            intent.putExtra("nome", ag.nome);
+            intent.putExtra("endereco", ag.endereco);
             intent.putExtra("data", ag.data);
             intent.putExtra("hora", ag.hora);
             intent.putExtra("tipo", ag.tipoServico);
-            intent.putExtra("descricao", ag.descricao);
+            intent.putExtra("descricao", ag.descricao); // Se quiser manter, senão pode remover
             context.startActivity(intent);
         });
 
-        // Clique longo: excluir
+        // Clique longo: excluir com confirmação
         holder.itemView.setOnLongClickListener(v -> {
-            String chave = ag.data + "_" + ag.hora;
-            FirebaseDatabase.getInstance().getReference("agendamentos").child(chave).removeValue()
-                    .addOnSuccessListener(unused -> Toast.makeText(context, "Excluído.", Toast.LENGTH_SHORT).show())
-                    .addOnFailureListener(e -> Toast.makeText(context, "Erro ao excluir.", Toast.LENGTH_SHORT).show());
+            new androidx.appcompat.app.AlertDialog.Builder(context)
+                    .setTitle("Excluir Agendamento")
+                    .setMessage("Deseja realmente excluir este agendamento?")
+                    .setPositiveButton("Sim", (dialog, which) -> {
+                        String chave = ag.data + "_" + ag.hora;
+                        FirebaseDatabase.getInstance().getReference("agendamentos").child(chave).removeValue()
+                                .addOnSuccessListener(unused -> Toast.makeText(context, "Excluído.", Toast.LENGTH_SHORT).show())
+                                .addOnFailureListener(e -> Toast.makeText(context, "Erro ao excluir.", Toast.LENGTH_SHORT).show());
+                    })
+                    .setNegativeButton("Cancelar", null)
+                    .show();
             return true;
         });
     }

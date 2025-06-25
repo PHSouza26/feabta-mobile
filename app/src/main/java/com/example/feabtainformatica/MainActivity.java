@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
     private String dataSelecionada = "";
 
-    private TextView txtMensagem;
+
+    private Button btnLimparFiltro;
 
 
     @Override
@@ -39,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         txtDataSelecionada = findViewById(R.id.filtroData);
         btnFiltrar = findViewById(R.id.btnFiltrar);
         btnNovo = findViewById(R.id.btnNovo);
-        txtMensagem = findViewById(R.id.txtMensagem);
 
         databaseRef = FirebaseDatabase.getInstance().getReference("agendamentos");
 
@@ -52,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
         txtDataSelecionada.setOnClickListener(v -> abrirDatePicker());
         btnFiltrar.setOnClickListener(v -> filtrarPorData());
         btnNovo.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, addagenda.class)));
+
+        btnLimparFiltro = findViewById(R.id.btnLimparFiltro);
+
+        btnLimparFiltro.setOnClickListener(v -> {
+            dataSelecionada = "";
+            txtDataSelecionada.setText("Selecionar Data");
+            carregarAgendamentos();
+        });
     }
 
     private void abrirDatePicker() {
@@ -83,11 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        if (listaAgendamentos.isEmpty()) {
-            txtMensagem.setVisibility(View.VISIBLE);
-        } else {
-            txtMensagem.setVisibility(View.GONE);
-        }
+
     }
 
     private void filtrarPorData() {
@@ -115,20 +119,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
-
-        if (listaAgendamentos.isEmpty()) {
-            txtMensagem.setVisibility(View.VISIBLE);
-        } else {
-            txtMensagem.setVisibility(View.GONE);
-        }
     }
 
     public static class Agendamento {
-        public String data, hora, tipoServico, descricao;
+        public String nome;
+        public String endereco;
+        public String data;
+        public String hora;
+        public String tipoServico;
+        public String descricao;
 
         public Agendamento() { }
 
-        public Agendamento(String data, String hora, String tipoServico, String descricao) {
+        public Agendamento(String nome, String endereco, String data, String hora, String tipoServico, String descricao) {
+            this.nome = nome;
+            this.endereco = endereco;
             this.data = data;
             this.hora = hora;
             this.tipoServico = tipoServico;

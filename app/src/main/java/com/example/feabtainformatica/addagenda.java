@@ -15,7 +15,7 @@ import java.util.*;
 public class addagenda extends AppCompatActivity {
 
     private Spinner spinnerTipo;
-    private EditText edtDescricao;
+    private EditText edtDescricao, edtNome, edtEndereco;;
     private TextView txtData, txtHora;
     private Button btnAgendar;
 
@@ -31,6 +31,8 @@ public class addagenda extends AppCompatActivity {
 
         spinnerTipo = findViewById(R.id.spinnerTipo);
         edtDescricao = findViewById(R.id.edtDescricao);
+        edtNome = findViewById(R.id.edtNome);
+        edtEndereco = findViewById(R.id.edtEndereco);
         txtData = findViewById(R.id.txtData);
         txtHora = findViewById(R.id.txtHora);
         btnAgendar = findViewById(R.id.btnAgendar);
@@ -80,8 +82,11 @@ public class addagenda extends AppCompatActivity {
     private void verificarEAgendar() {
         String tipo = spinnerTipo.getSelectedItem().toString();
         String descricao = edtDescricao.getText().toString().trim();
+        String nome = edtNome.getText().toString().trim();
+        String endereco = edtEndereco.getText().toString().trim();
 
-        if (TextUtils.isEmpty(descricao) || TextUtils.isEmpty(dataSelecionada) || TextUtils.isEmpty(horaSelecionada)) {
+        if (TextUtils.isEmpty(nome) || TextUtils.isEmpty(endereco) ||
+                TextUtils.isEmpty(descricao) || TextUtils.isEmpty(dataSelecionada) || TextUtils.isEmpty(horaSelecionada)) {
             Toast.makeText(this, "Preencha todos os campos.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -113,9 +118,12 @@ public class addagenda extends AppCompatActivity {
                 if (snapshot.exists()) {
                     Toast.makeText(addagenda.this, "Conflito: horário já agendado!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Agendamento agendamento = new Agendamento(dataSelecionada, horaSelecionada, tipo, descricao);
+                    Agendamento agendamento = new Agendamento(nome, endereco, dataSelecionada, horaSelecionada, tipo, descricao);
                     databaseRef.child(chave).setValue(agendamento)
-                            .addOnSuccessListener(unused -> Toast.makeText(addagenda.this, "Agendado com sucesso!", Toast.LENGTH_SHORT).show())
+                            .addOnSuccessListener(unused -> {
+                                Toast.makeText(addagenda.this, "Agendado com sucesso!", Toast.LENGTH_SHORT).show();
+                                finish();
+                            })
                             .addOnFailureListener(e -> Toast.makeText(addagenda.this, "Erro ao agendar.", Toast.LENGTH_SHORT).show());
                 }
             }
@@ -128,11 +136,13 @@ public class addagenda extends AppCompatActivity {
     }
 
     public static class Agendamento {
-        public String data, hora, tipoServico, descricao;
+        public String nome, endereco, data, hora, tipoServico, descricao;
 
         public Agendamento() { }
 
-        public Agendamento(String data, String hora, String tipoServico, String descricao) {
+        public Agendamento(String nome, String endereco, String data, String hora, String tipoServico, String descricao) {
+            this.nome = nome;
+            this.endereco = endereco;
             this.data = data;
             this.hora = hora;
             this.tipoServico = tipoServico;

@@ -16,9 +16,12 @@
         android:hint="Selecionar Data"
         android:padding="12dp"
         android:textSize="16sp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="51dp" />
-
+        app:layout_constraintBottom_toTopOf="@+id/btnNovo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.218"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.568" />
 
     <Button
         android:id="@+id/btnFiltrar"
@@ -27,10 +30,10 @@
         android:text="Filtrar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.753"
+        app:layout_constraintHorizontal_bias="0.636"
         app:layout_constraintStart_toEndOf="@+id/filtroData"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.079" />
+        app:layout_constraintVertical_bias="0.048" />
 
     <Button
         android:id="@+id/btnNovo"
@@ -55,16 +58,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/txtMensagem"
-        android:layout_width="305dp"
-        android:layout_height="34dp"
-        android:padding="8dp"
-        android:text="Nenhum agendamento encontrado"
-        android:textAlignment="center"
-        android:textSize="16sp"
-        android:visibility="gone"
+
+    <Button
+        android:id="@+id/btnLimparFiltro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Limpar Filtro"
+
+
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="65dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerAgendamentos" />
 </androidx.constraintlayout.widget.ConstraintLayout>

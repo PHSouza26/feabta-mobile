@@ -15,7 +15,7 @@
         android:theme="@style/Theme.FeAbTaInformatica"
         tools:targetApi="31">
         <activity
-            android:name=".editAgendamentoActivity"
+            android:name=".EditAgendamentoActivity"
             android:exported="false" />
         <activity
             android:name=".AgendamentoAdapter"

@@ -5,17 +5,17 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.*;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.*;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.*;
 
 public class EditAgendamentoActivity extends AppCompatActivity {
 
+    private EditText edtNome, edtEndereco, edtDescricao;
     private Spinner spinnerTipo;
-    private EditText edtDescricao;
     private TextView txtData, txtHora;
     private Button btnSalvar, btnExcluir;
 
@@ -27,33 +27,32 @@ public class EditAgendamentoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addagenda);
+        setContentView(R.layout.activity_edit_agenda);
 
-        // Spinner e campos
+        edtNome = findViewById(R.id.edtNome);
+        edtEndereco = findViewById(R.id.edtEndereco);
         spinnerTipo = findViewById(R.id.spinnerTipo);
         edtDescricao = findViewById(R.id.edtDescricao);
         txtData = findViewById(R.id.txtData);
         txtHora = findViewById(R.id.txtHora);
-        btnSalvar = findViewById(R.id.btnAgendar);
-        btnSalvar.setText("Salvar");
-
-        btnExcluir = findViewById(R.id.btnLimparCampos);
-        btnExcluir.setText("Excluir");
+        btnSalvar = findViewById(R.id.btnSalvar);
+        btnExcluir = findViewById(R.id.btnExcluir);
 
         databaseRef = FirebaseDatabase.getInstance().getReference("agendamentos");
 
-        // Configura o spinner
         ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tipos);
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTipo.setAdapter(adapterSpinner);
 
-        // Recupera dados com segurança
+        // Recupera os dados enviados pela Intent
+        String nome = getIntent().getStringExtra("nome");
+        String endereco = getIntent().getStringExtra("endereco");
         String data = getIntent().getStringExtra("data");
         String hora = getIntent().getStringExtra("hora");
         String tipo = getIntent().getStringExtra("tipo");
         String desc = getIntent().getStringExtra("descricao");
 
-        if (data == null || hora == null || tipo == null || desc == null) {
+        if (nome == null || endereco == null || data == null || hora == null || tipo == null || desc == null) {
             Toast.makeText(this, "Dados inválidos.", Toast.LENGTH_SHORT).show();
             finish();
             return;
@@ -61,11 +60,13 @@ public class EditAgendamentoActivity extends AppCompatActivity {
 
         chaveOriginal = data + "_" + hora;
 
+        // Preencher os campos
+        edtNome.setText(nome);
+        edtEndereco.setText(endereco);
         txtData.setText(data);
         txtHora.setText(hora);
         edtDescricao.setText(desc);
 
-        // Seleciona o item correto no spinner
         int indexTipo = Arrays.asList(tipos).indexOf(tipo);
         if (indexTipo >= 0) {
             spinnerTipo.setSelection(indexTipo);
@@ -95,20 +96,22 @@ public class EditAgendamentoActivity extends AppCompatActivity {
     }
 
     private void salvarAlteracoes() {
+        String nome = edtNome.getText().toString().trim();
+        String endereco = edtEndereco.getText().toString().trim();
         String tipo = spinnerTipo.getSelectedItem().toString();
         String descricao = edtDescricao.getText().toString().trim();
         String data = txtData.getText().toString().trim();
         String hora = txtHora.getText().toString().trim();
 
-        if (TextUtils.isEmpty(descricao) || TextUtils.isEmpty(data) || TextUtils.isEmpty(hora)) {
+        if (TextUtils.isEmpty(nome) || TextUtils.isEmpty(endereco) || TextUtils.isEmpty(descricao)
+                || TextUtils.isEmpty(data) || TextUtils.isEmpty(hora)) {
             Toast.makeText(this, "Preencha todos os campos.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Validação de data e hora futuras
         Calendar agora = Calendar.getInstance();
-
         Calendar dataHoraSelecionada = Calendar.getInstance();
+
         try {
             String[] dataSplit = data.split("-");
             String[] horaSplit = hora.split(":");
@@ -129,9 +132,10 @@ public class EditAgendamentoActivity extends AppCompatActivity {
         }
 
         String novaChave = data + "_" + hora;
-        MainActivity.Agendamento novo = new MainActivity.Agendamento(data, hora, tipo, descricao);
 
-        // Atualiza o agendamento
+        // Atualiza o agendamento incluindo nome e endereço
+        MainActivity.Agendamento novo = new MainActivity.Agendamento(nome, endereco, data, hora, tipo, descricao);
+
         databaseRef.child(chaveOriginal).removeValue();
         databaseRef.child(novaChave).setValue(novo)
                 .addOnSuccessListener(unused -> {

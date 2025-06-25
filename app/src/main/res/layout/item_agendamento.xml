@@ -12,7 +12,7 @@
         android:id="@+id/txtInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=" Data: \n Hora: \n Serviço: \n Descrição:"
+        android:text="Nome: \n Data: \n Hora: \n Serviço: \n Endereço:"
         android:textSize="16sp"
         android:textColor="#000" />
 
